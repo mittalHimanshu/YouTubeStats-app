@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
   ){}
 
   ngOnInit(){
-    this.channel('The RawKnee Games')
+    this.channelInfo = []
   }
 
   closeWindow = () => {

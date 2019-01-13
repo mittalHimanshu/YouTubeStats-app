@@ -15,7 +15,7 @@ export class DataService {
   getStats = name => {
     return interval(5000).pipe(
       startWith(0),
-      switchMap(() => this.http.get(`https://www.googleapis.com/youtube/v3/channels?part=statistics,snippet&forUsername=${name}&key=AIzaSyCSBH8OR1dfmWFQwDUXwyGisKWZbyUsEOw`)),
+      switchMap(() => this.http.get(`https://www.googleapis.com/youtube/v3/channels?part=statistics,snippet&id=${name}&key=AIzaSyCSBH8OR1dfmWFQwDUXwyGisKWZbyUsEOw`)),
       map(res => res)
     )
   }

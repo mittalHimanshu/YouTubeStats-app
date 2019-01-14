@@ -1,3 +1,8 @@
+const setupEvents = require('./installers/setupEvents')
+if (setupEvents.handleSquirrelEvent()) {
+    return;
+}
+
 const { app, BrowserWindow } = require('electron')
 const isDev = require('electron-is-dev')
 const { ipcMain } = require('electron')
@@ -8,43 +13,43 @@ if (handleSquirrelEvent(app)) {
 }
 
 function createWindow() {
-	mainWindow = new BrowserWindow({
-		width: 1000,
-		height: 600,
-		frame: false 
-	})
+    mainWindow = new BrowserWindow({
+        width: 1000,
+        height: 600,
+        frame: false
+    })
 
-	mainWindow.loadURL(
+    mainWindow.loadURL(
         isDev
             ? 'http://localhost:4200'
             : `file://${__dirname}/dist/YouTubeStats-app/index.html`,
-	)
-	
-	mainWindow.on('closed', function () {
-		mainWindow = null
-	})
+    )
+
+    mainWindow.on('closed', function () {
+        mainWindow = null
+    })
 }
 
 ipcMain.on('close-window', event => {
-	mainWindow.close()
+    mainWindow.close()
 })
 
 ipcMain.on('minimize-window', event => {
-	mainWindow.minimize()
+    mainWindow.minimize()
 })
 
 app.on('ready', createWindow)
 
 app.on('window-all-closed', function () {
-	if (process.platform !== 'darwin') {
-		app.quit()
-	}
+    if (process.platform !== 'darwin') {
+        app.quit()
+    }
 })
 
 app.on('activate', function () {
-	if (mainWindow === null) {
-		createWindow()
-	}
+    if (mainWindow === null) {
+        createWindow()
+    }
 })
 
 function handleSquirrelEvent(application) {
@@ -60,19 +65,19 @@ function handleSquirrelEvent(application) {
     const updateDotExe = path.resolve(path.join(rootAtomFolder, 'Update.exe'));
     const exeName = path.basename(process.execPath);
 
-    const spawn = function(command, args) {
+    const spawn = function (command, args) {
         let spawnedProcess, error;
 
         try {
             spawnedProcess = ChildProcess.spawn(command, args, {
                 detached: true
             });
-        } catch (error) {}
+        } catch (error) { }
 
         return spawnedProcess;
     };
 
-    const spawnUpdate = function(args) {
+    const spawnUpdate = function (args) {
         return spawn(updateDotExe, args);
     };
 

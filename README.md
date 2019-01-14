@@ -1,10 +1,10 @@
 # YouTubeStats
 
-A Desktop app created with `Angular CLI` and `Electron`.
+A Desktop app created with `Angular CLI` and `Electron` for the realtime count of youtube channel subscribers by channel-id.
 
 ## Packaged app
 
-<a href="https://mittalhimanshu151.000webhostapp.com/Installers/YTStats/YTStats-win32-ia32.rar">Click Here </a> to download the packaged app
+<a href="https://mittalhimanshu151.000webhostapp.com/Installers/YTStats/YTStats-win32-ia32.rar">Click Here </a> to download the packaged app.
 
 ## Installers
 

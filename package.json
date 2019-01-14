@@ -1,6 +1,6 @@
 {
-  "name": "you_tube_stats_app",
-  "version": "0.0.0",
+  "name": "yt_stats",
+  "version": "1.0.0",
   "description": "Youtube Stats app for realtime count of subscribers by channel-id",
   "main": "main.js",
   "scripts": {
@@ -9,12 +9,7 @@
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "electron": "electron .",
-    "electron:linux": "npm run build && npx electron-builder build --linux",
-    "electron:windows": "npm run build && npx electron-builder build --windows",
-    "electron:mac": "npm run build && npx electron-builder build --mac",
-    "dev": "concurrently \"npm start\" \"npm run electron\""
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -43,9 +38,8 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
     "codelyzer": "~4.5.0",
-    "electron": "^4.0.1",
-    "electron-builder": "^20.38.4",
     "concurrently": "^4.1.0",
+    "electron": "^4.0.1",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~3.1.1",

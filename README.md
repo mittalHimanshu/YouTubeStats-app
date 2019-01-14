@@ -15,5 +15,5 @@ A Desktop app created with `Angular CLI` and `Electron` for the realtime count o
 ## Screenshot
 
 <p align="center">
-<img src="https://mittalhimanshu151.000webhostapp.com/Images/YTStats/yt_stats.PNG" width="800" height="300" alt="yt-stats" />
+<img src="https://mittalhimanshu151.000webhostapp.com/Images/YTStats/yt_stats.PNG" alt="yt-stats" />
 </p>

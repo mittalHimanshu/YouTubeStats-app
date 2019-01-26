@@ -2,7 +2,7 @@ import { DataService } from './data.service';
 import { Component, OnInit, ModuleWithComponentFactories } from '@angular/core';
 import { ElectronService } from 'ngx-electron'
 import * as moment from 'moment'
-import * as CanvasJS from './canvasjs.min';
+import * as Plotly from './plotly-latest.min'
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -13,17 +13,8 @@ import { Subscription } from 'rxjs';
 export class AppComponent implements OnInit {
 
   channelInfo: any = []
-  dps: any = []
-  x: any
-  chart: any
   channelSubscription: Subscription
-
-  private data = [{
-    x: [],
-    y: [],
-    mode: 'lines',
-    line: { color: '#80CAF6' }
-  }]
+  private count = 0
 
   constructor(
     private _electron: ElectronService,
@@ -32,21 +23,22 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.channelInfo = []
-    this.x = 0
-    this.chart = new CanvasJS.Chart("chartContainer", {
-      exportEnabled: true,
-      title: {
-        text: "Live Subscriber Count"
-      },
-      axisY: {
-        includeZero: false,
-        gridThickness: 0
-      },
-      data: [{
-        type: "spline",
-        dataPoints: this.dps
-      }]
-    });
+    Plotly.plot('chart', [{
+      x: [],
+      y: [],
+      type: "line"
+    }], {
+        xaxis: {
+          rangemode: 'tozero',
+          autorange: true,
+          showgrid: true,
+        },
+        yaxis: {
+          rangemode: 'nonnegative',
+          autorange: true,
+          showgrid: true,
+        }
+      })
   }
 
   closeWindow = () => {
@@ -59,22 +51,24 @@ export class AppComponent implements OnInit {
 
   channel = name => {
 
-    if(this.channelSubscription)
+    if (this.channelSubscription)
       this.channelSubscription.unsubscribe()
 
     this.channelSubscription = this._data.getStats(name).subscribe(
       (res: any) => {
         this.channelInfo = res
-        this.dps.push({
-          x: this.x,
-          y: parseInt(res.items.map(item => item.statistics.subscriberCount)[0])
-        })
-        console.log(this.dps)
-        this.x += 1
-        if (this.dps.length > 10) {
-          this.dps.shift();
+        Plotly.extendTraces('chart', {
+          x: [[this.count]],
+          y: [[parseInt(res.items.map(item => item.statistics.subscriberCount)[0])]]
+        }, [0])
+        if (this.count > 10) {
+          Plotly.relayout('chart', {
+            xaxis: {
+              range: [this.count-10, this.count]
+            }
+          })
         }
-        this.chart.render()
+        this.count += 1
       }
     )
   }

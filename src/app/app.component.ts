@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
   channelInfo: any = []
   channelSubscription: Subscription
   private count = 0
+  private isLoading: boolean
 
   constructor(
     private _electron: ElectronService,
@@ -22,25 +23,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.channelInfo = []
-    Plotly.plot('chart', [{
-      x: [],
-      y: [],
-      type: "line",
-      line: {shape: 'spline'}
-    }], {
-        xaxis: {
-          rangemode: 'tozero',
-          autorange: true,
-          showgrid: false
-        },
-        yaxis: {
-          rangemode: 'nonnegative',
-          autorange: true,
-          showgrid: false
-        }
-      },
-      { responsive: true }
-    )
+    this.isLoading = false
   }
 
   closeWindow = () => {
@@ -51,16 +34,50 @@ export class AppComponent implements OnInit {
     this._electron.ipcRenderer.send('minimize-window')
   }
 
+  initializeChart = () => {
+    Plotly.plot('chart', [{
+      x: [],
+      y: [],
+      type: "line",
+      line: { shape: 'spline' }
+    }], {
+        xaxis: {
+          rangemode: 'tozero',
+          autorange: true,
+          showgrid: true,
+          zeroline: false,
+          showline: false,
+          showticklabels: true,
+          automargin: true
+        },
+        yaxis: {
+          rangemode: 'nonnegative',
+          autorange: true,
+          showgrid: false,
+          zeroline: false,
+          automargin: true,
+          showline: false,
+          showticklabels: true
+        }
+      },
+      { responsive: true }
+    )
+  }
+
   channel = name => {
+
+    this.isLoading = true
 
     if (this.channelSubscription)
       this.channelSubscription.unsubscribe()
 
+    this.initializeChart()
+
     this.channelSubscription = this._data.getStats(name).subscribe(
       (res: any) => {
+        this.isLoading = false
         this.channelInfo = res
         let d1 = new Date()
-        console.log(d1)
         Plotly.extendTraces('chart', {
           x: [[d1]],
           y: [[parseInt(res.items.map(item => item.statistics.subscriberCount)[0])]]
@@ -70,8 +87,7 @@ export class AppComponent implements OnInit {
           d2.setSeconds(d1.getSeconds() - 10)
           Plotly.relayout('chart', {
             xaxis: {
-              range: [d2, d1],
-              showgrid: false
+              range: [d2, d1]
             }
           })
         }

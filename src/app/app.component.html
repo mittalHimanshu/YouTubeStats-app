@@ -26,4 +26,8 @@
   </div>
 </div>
 
-<div id='chart'></div>
+<img width="92px" height="92px" *ngIf="isLoading; else loadingComplete" style="display:block; margin: auto; margin-top: 33vh;"
+  src="assets/gifs/cube.gif">
+<ng-template #loadingComplete>
+  <div id='chart'></div>
+</ng-template>

@@ -1,7 +1,6 @@
 import { DataService } from './data.service';
 import { Component, OnInit, ModuleWithComponentFactories } from '@angular/core';
 import { ElectronService } from 'ngx-electron'
-import * as moment from 'moment'
 import * as Plotly from './plotly-latest.min'
 import { Subscription } from 'rxjs';
 
@@ -26,19 +25,22 @@ export class AppComponent implements OnInit {
     Plotly.plot('chart', [{
       x: [],
       y: [],
-      type: "line"
+      type: "line",
+      line: {shape: 'spline'}
     }], {
         xaxis: {
           rangemode: 'tozero',
           autorange: true,
-          showgrid: true,
+          showgrid: false
         },
         yaxis: {
           rangemode: 'nonnegative',
           autorange: true,
-          showgrid: true,
+          showgrid: false
         }
-      })
+      },
+      { responsive: true }
+    )
   }
 
   closeWindow = () => {
@@ -57,14 +59,19 @@ export class AppComponent implements OnInit {
     this.channelSubscription = this._data.getStats(name).subscribe(
       (res: any) => {
         this.channelInfo = res
+        let d1 = new Date()
+        console.log(d1)
         Plotly.extendTraces('chart', {
-          x: [[this.count]],
+          x: [[d1]],
           y: [[parseInt(res.items.map(item => item.statistics.subscriberCount)[0])]]
         }, [0])
         if (this.count > 10) {
+          let d2 = new Date(d1)
+          d2.setSeconds(d1.getSeconds() - 10)
           Plotly.relayout('chart', {
             xaxis: {
-              range: [this.count-10, this.count]
+              range: [d2, d1],
+              showgrid: false
             }
           })
         }

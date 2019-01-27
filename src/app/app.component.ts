@@ -1,8 +1,8 @@
 import { DataService } from './data.service';
-import { Component, OnInit, ModuleWithComponentFactories } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ElectronService } from 'ngx-electron'
 import * as Plotly from './plotly-latest.min'
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs'
 
 @Component({
   selector: 'app-root',
@@ -79,7 +79,7 @@ export class AppComponent implements OnInit {
         this.channelInfo = res
         let d1 = new Date()
         Plotly.extendTraces('chart', {
-          x: [[d1]],
+          x: [[d1.toLocaleTimeString()]],
           y: [[parseInt(res.items.map(item => item.statistics.subscriberCount)[0])]]
         }, [0])
         if (this.count > 10) {
@@ -87,11 +87,13 @@ export class AppComponent implements OnInit {
           d2.setSeconds(d1.getSeconds() - 10)
           Plotly.relayout('chart', {
             xaxis: {
-              range: [d2, d1]
+              range: [d2.toLocaleTimeString(), d1.toLocaleTimeString()]
             }
           })
         }
-        this.count += 1
+        else {
+          this.count += 1
+        }
       }
     )
   }

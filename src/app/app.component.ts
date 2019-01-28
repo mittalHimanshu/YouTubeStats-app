@@ -64,6 +64,12 @@ export class AppComponent implements OnInit {
     )
   }
 
+  getChannelId = name => {
+    this._data.getChannelId(name).subscribe((res: any) => {
+      this.channel(res.items[0].id)
+    })
+  }
+
   channel = name => {
 
     this.isLoading = true
@@ -75,11 +81,12 @@ export class AppComponent implements OnInit {
 
     this.channelSubscription = this._data.getStats(name).subscribe(
       (res: any) => {
+        console.log(res)
         this.isLoading = false
         this.channelInfo = res
         let d1 = new Date()
         Plotly.extendTraces('chart', {
-          x: [[d1.toLocaleTimeString()]],
+          x: [[d1]],
           y: [[parseInt(res.items.map(item => item.statistics.subscriberCount)[0])]]
         }, [0])
         if (this.count > 10) {
@@ -87,7 +94,7 @@ export class AppComponent implements OnInit {
           d2.setSeconds(d1.getSeconds() - 10)
           Plotly.relayout('chart', {
             xaxis: {
-              range: [d2.toLocaleTimeString(), d1.toLocaleTimeString()]
+              range: [d2, d1]
             }
           })
         }

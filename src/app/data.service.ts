@@ -15,8 +15,11 @@ export class DataService {
   getStats = name => {
     return interval(1000).pipe(
       startWith(0),
-      switchMap(() => this.http.get(`https://www.googleapis.com/youtube/v3/channels?part=statistics,snippet&id=${name}&key=AIzaSyCSBH8OR1dfmWFQwDUXwyGisKWZbyUsEOw`)),
+      switchMap(() => this.http.get(`https://www.googleapis.com/youtube/v3/channels?part=statistics,snippet&id=${name}&key=AIzaSyDLByGlBdTnYEAMPbzq9LY7t-x3Wuhis90`)),
       map(res => res)
     )
   }
+
+  getChannelId = name => 
+    this.http.get(`https://www.googleapis.com/youtube/v3/channels?key=AIzaSyDLByGlBdTnYEAMPbzq9LY7t-x3Wuhis90&forUsername=${name}&part=id`)
 }

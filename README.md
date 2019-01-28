@@ -8,12 +8,12 @@ A Desktop app created with `Angular CLI` and `Electron` for the realtime count o
 
 ## Installers
 
-* Windows - <a href="https://drive.google.com/open?id=1VxFRzib8Xq23U7_gJxzkIMWDcX7veS44">CLick Here</a>
+* Windows - <a href="https://drive.google.com/open?id=1OG2iekH_171XJa3iLGvDpYqc4PCihJhI">CLick Here</a>
 * Linux - Coming soon...
 * Mac - Coming soon..
 
-## Screenshot
+## Preview
 
 <p align="center">
-<img src="https://mittalhimanshu151.000webhostapp.com/Images/YTStats/yt_stats.PNG" alt="yt-stats" />
+<img src="https://mittalhimanshu151.000webhostapp.com/Gifs/YTStats.gif" alt="yt-stats" />
 </p>

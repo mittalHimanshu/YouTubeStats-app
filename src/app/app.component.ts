@@ -14,10 +14,10 @@ export class AppComponent implements OnInit {
   channelInfo: any = []
   channelSubscription: Subscription
   private count = 0
-  private isLoading: boolean
-  private isError: boolean
+  public isLoading: boolean
+  public isError: boolean
   private errorText: string
-  private showChart: boolean
+  public showChart: boolean
 
   constructor(
     private _electron: ElectronService,
@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
   }
 
   initializeChart = () => {
-    Plotly.plot('chart', [{
+    Plotly.newPlot('chart', [{
       x: [],
       y: [],
       type: "line",
@@ -100,7 +100,6 @@ export class AppComponent implements OnInit {
     this.isLoading = true
     this.unsubscribe()
     this.initializeChart()
-
     this.channelSubscription = this._data.getStats(name).subscribe(
       (res: any) => {
         this.isLoading = false

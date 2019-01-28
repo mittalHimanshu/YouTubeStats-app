@@ -6,31 +6,45 @@
       <i class="fas fa-times fa-lg fa-border" (click)="closeWindow()"></i>
     </div>
     <div class="input-group input-group-sm" style="margin-top: 5px;">
-      <input type="text" class="form-control" placeholder="Channel ID" (keyup.enter)="channel($event.target.value)" />
+      <input type="text" (focus)="removeError()" class="form-control" placeholder="Channel ID" (keyup.enter)="channel($event.target.value)" />
     </div>
     <div style="margin-top: 5px; text-align: center; width: 100%">
       OR
     </div>
     <div class="input-group input-group-sm" style="margin-top: 5px;">
-      <input type="text" class="form-control" placeholder="Channel Username" (keyup.enter)="getChannelId($event.target.value)" />
+      <input type="text" class="form-control" (focus)="removeError()" placeholder="Channel Username" (keyup.enter)="getChannelId($event.target.value)" />
     </div>
   </nav>
 
   <div class="rounded box-shadow bg-light p-3" style="margin-top: -8px;">
-    <div class="media text-muted pt-3" style="background-color: #f8f9fa;" *ngFor="let channel of channelInfo.items">
-      <img [src]="channel.snippet.thumbnails.default.url" alt="" class="mr-2 rounded" width="32" height="32" />
-      <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-        <strong class="d-block text-gray-dark text-body" style="font-size: 20px;">
-          {{ channel.snippet.title }}
-          <span style="float: right; font-size: 30px;">
-            {{ channel.statistics.subscriberCount | number }}
-          </span>
-        </strong>
-        <span class="text-body" style="position: absolute; right: 0; padding-right: 35px; padding-top: 6px;">SUBSCRIBERS</span>
-      </p>
+    <div *ngIf="isError; else noError" style=" color: white; font-weight: bold;
+    width: 100%; text-align: center; font-size: 1rem; background: #01E5FE; padding: 10px;">
+      {{errorText}}
+      <span class="closebtn" onclick="this.parentElement.style.display='none';" style="margin-left: 15px;
+        color: white;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;">&times;</span>
     </div>
+    <ng-template #noError>
+      <div class="media text-muted pt-3" style="background-color: #f8f9fa;" *ngFor="let channel of channelInfo.items">
+        <img [src]="channel.snippet.thumbnails.default.url" alt="" class="mr-2 rounded" width="32" height="32" />
+        <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+          <strong class="d-block text-gray-dark text-body" style="font-size: 20px;">
+            {{ channel.snippet.title }}
+            <span style="float: right; font-size: 30px;">
+              {{ channel.statistics.subscriberCount | number }}
+            </span>
+          </strong>
+          <span class="text-body" style="position: absolute; right: 0; padding-right: 35px; padding-top: 6px;">SUBSCRIBERS</span>
+        </p>
+      </div>
+    </ng-template>
   </div>
 </div>
 
 <img width="92px" height="92px" *ngIf="isLoading" style="display:block; margin: auto; margin-top: 33vh;" src="assets/gifs/cube.gif">
-<div [style.visibility]="isLoading ? 'hidden' : 'visible' " id='chart'></div>
+<div [style.visibility]="showChart ? 'visible' : 'hidden' " id='chart'></div>

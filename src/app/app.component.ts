@@ -15,6 +15,9 @@ export class AppComponent implements OnInit {
   channelSubscription: Subscription
   private count = 0
   private isLoading: boolean
+  private isError: boolean
+  private errorText: string
+  private showChart: boolean
 
   constructor(
     private _electron: ElectronService,
@@ -24,6 +27,8 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.channelInfo = []
     this.isLoading = false
+    this.isError = false
+    this.showChart = false
   }
 
   closeWindow = () => {
@@ -66,23 +71,41 @@ export class AppComponent implements OnInit {
 
   getChannelId = name => {
     this._data.getChannelId(name).subscribe((res: any) => {
+      if (!this.validateResponse(res)) return
       this.channel(res.items[0].id)
     })
+  }
+
+  validateResponse = res => {
+    if (res.items.length == 0) {
+      this.isError = true
+      this.errorText = 'Invalid Channel Id/ Username'
+      this.unsubscribe()
+      return false
+    }
+    return true
+  }
+
+  removeError = () => {
+    this.isError = false
+  }
+
+  unsubscribe = () => {
+    if (this.channelSubscription)
+      this.channelSubscription.unsubscribe()
   }
 
   channel = name => {
 
     this.isLoading = true
-
-    if (this.channelSubscription)
-      this.channelSubscription.unsubscribe()
-
+    this.unsubscribe()
     this.initializeChart()
 
     this.channelSubscription = this._data.getStats(name).subscribe(
       (res: any) => {
-        console.log(res)
         this.isLoading = false
+        if (!this.validateResponse(res)) return
+        this.showChart = true
         this.channelInfo = res
         let d1 = new Date()
         Plotly.extendTraces('chart', {

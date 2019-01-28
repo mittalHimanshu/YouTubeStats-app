@@ -1,6 +1,6 @@
 # YouTubeStats
 
-A Desktop app created with `Angular CLI` and `Electron` for the realtime count of youtube channel subscribers by channel-id.
+A Desktop app created with `Angular CLI` and `Electron` for the realtime count of youtube channel subscribers by channel-id and username. Also a realtime graph displays all the stats for you.
 
 ## Packaged app
 
